@@ -62,14 +62,7 @@ class _FilterListWidgetState extends State<FilterListWidget> {
                     child: CustomButton(
                       colors: [],
                       onTap: () {
-                        setState(() {
-                          if (isSelected) {
-                            _selectedIndices.remove(Filters.values[index]);
-                          } else {
-                            _selectedIndices.add(Filters.values[index]);
-                          }
-                          widget.filters.call(_selectedIndices.toList());
-                        });
+                        
                       },
                       iconLeft: SvgPicture.asset(
                         Assets.filterIcon,
