@@ -1,16 +1,20 @@
-# guia_motel
+# Motel Finder App
 
-A new Flutter project.
+Bem-vindo ao **Motel Finder App**! Este aplicativo Flutter foi desenvolvido para proporcionar uma experiência intuitiva e prática na busca por moteis, ajudando você a encontrar rapidamente os melhores locais para se hospedar.
 
-## Getting Started
+![Tela Inicial do Motel Finder App](https://github.com/user-attachments/assets/d611d06f-60a3-4096-8dff-c16c515dc2b2)
 
-This project is a starting point for a Flutter application.
+## Executando os Testes Unitários
 
-A few resources to get you started if this is your first Flutter project:
+Os testes unitários são essenciais para garantir que o seu código funcione conforme o esperado. Para executar os testes unitários neste projeto, siga os passos abaixo:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. **Verifique se o Flutter está instalado**  
+   Certifique-se de ter o Flutter configurado corretamente em sua máquina. Se necessário, siga as [instruções de instalação](https://docs.flutter.dev/get-started/install).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2. **Acesse a raiz do projeto**  
+   Abra o terminal e navegue até o diretório raiz do projeto.
+
+3. **Execute todos os testes**  
+   Para rodar todos os testes unitários, utilize o comando:
+   ```bash
+   flutter test
