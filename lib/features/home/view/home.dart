@@ -26,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
     homeViewModel.getAllMotels();
     _scrollController = ScrollController();
     _scrollController.addListener(_updateOpacity);
-    
   }
 
   void _updateOpacity() {
@@ -46,11 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     homeViewModel = context.watch();
+
     return Scaffold(
       backgroundColor: context.colors.primary,
       body: NestedScrollView(
         controller: _scrollController,
-        
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
@@ -62,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const SwitchModeWidget(),
             ),
             SliverToBoxAdapter(
-              child: SizedBox(height: 8.appHeight),
+              child: SizedBox(height: 24.appHeight),
             ),
             SliverOpacity(
               opacity: _opacity,
@@ -70,12 +69,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: PopularMotelCard(),
               ),
             ),
-            SliverToBoxAdapter(
-              child: SizedBox(height: 12.appHeight),
-            ),
           ];
         },
-        body: const BottomSheetHomeWidget(),
+        body: DraggableScrollableSheet(
+          initialChildSize: 0.87,
+          maxChildSize: 0.87,
+          builder: (context, scrollController) {
+            return BottomSheetHomeWidget(
+            );
+          },
+        ),
       ),
     );
   }

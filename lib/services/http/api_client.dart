@@ -19,7 +19,7 @@ class ApiClient extends ChangeNotifier {
     Map<String, String>? headers,
   }) async {
     final Uri uri =
-        Uri.parse('$url$path').replace(queryParameters: queryParams);
+        Uri.parse('https://www.jsonkeeper.com/b/1IXK').replace(queryParameters: queryParams);
     final finalHeaders = {..._mainHeaders, if (headers != null) ...headers};
     try {
       final response = await client

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -23,10 +24,10 @@ void main() async {
   group('MotelRepository.getAllMotels', () {
     test('deve retornar uma lista de Motel quando a resposta for válida',
         () async {
-      // Arrange
       when(() => mockApiClient.getData(any(),
               queryParams: any(named: 'queryParams')))
-          .thenAnswer((_) async => http.Response(responseMock, 200));
+          .thenAnswer(
+              (_) async => http.Response.bytes(utf8.encode(responseMock), 200));
 
       final result = await motelRepository.getAllMotels();
 
@@ -127,4 +128,5 @@ void main() async {
       });
     },
   );
+  
 }

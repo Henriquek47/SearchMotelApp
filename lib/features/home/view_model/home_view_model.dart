@@ -26,6 +26,7 @@ class HomeViewModel extends ChangeNotifier {
     try {
       final list = await motelRepository.getPopularMotels();
       popularMotelList.addAll(list);
+      notifyListeners();
       return Result.success(data: popularMotelList);
     } catch (e) {
       return Result.failure(messageCode: "Nenhum motel encontrado. Verifique sua conexão");

@@ -18,7 +18,7 @@ class MotelRepository extends ChangeNotifier
   Future<List<MotelModel>> getAllMotels() async {
     try {
       final response = await _apiClient.getData(Endpoints.getAllMotels);
-      final body = jsonDecode(response.body);
+      final body = jsonDecode(utf8.decode(response.bodyBytes));
       for (var e in body['data']['moteis']) {
         motels.add(MotelModel.fromJson(e));
       }

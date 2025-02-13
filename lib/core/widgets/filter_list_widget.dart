@@ -1,20 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:guia_motel/core/constants/assets.dart';
+import 'package:guia_motel/core/constants/enums.dart';
 import 'package:guia_motel/core/responsive/responsive_extension.dart';
 import 'package:guia_motel/core/style/colors_app.dart';
 import 'package:guia_motel/core/style/text_style_app.dart';
 import 'package:guia_motel/core/widgets/custom_button.dart';
 
 class FilterListWidget extends StatefulWidget {
-  const FilterListWidget({super.key});
+  final  Function(List<Filters>) filters;
+  const FilterListWidget({super.key, required this.filters});
 
   @override
   State<FilterListWidget> createState() => _FilterListWidgetState();
 }
 
 class _FilterListWidgetState extends State<FilterListWidget> {
-  final Set<int> _selectedIndices = {};
+  final Set<Filters> _selectedIndices = {};
+
+  List<String> getFiltersInPortuguese() {
+  return Filters.values.map((filter) {
+    switch (filter) {
+      case Filters.withDiscount:
+        return "Com Desconto";
+      case Filters.available:
+        return "Disponível";
+      case Filters.hydromassage:
+        return "Hidromassagem";
+      case Filters.sauna:
+        return "Sauna";
+      case Filters.eroticDecoration:
+        return "Decoração Erótica";
+      case Filters.themedDecoration:
+        return "Decoração Temática";
+      case Filters.wifi:
+        return "Wi-Fi";
+      case Filters.minibar:
+        return "Minibar";
+      case Filters.garage:
+        return "Garagem";
+    }
+  }).toList();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +50,10 @@ class _FilterListWidgetState extends State<FilterListWidget> {
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: 10,
+        itemCount: Filters.values.length,
         itemBuilder: (context, index) {
-          final bool isSelected = _selectedIndices.contains(index);
+          final bool isSelected =
+              _selectedIndices.contains(Filters.values[index]);
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.appWidth),
             child: index == 0
@@ -36,10 +64,11 @@ class _FilterListWidgetState extends State<FilterListWidget> {
                       onTap: () {
                         setState(() {
                           if (isSelected) {
-                            _selectedIndices.remove(index);
+                            _selectedIndices.remove(Filters.values[index]);
                           } else {
-                            _selectedIndices.add(index);
+                            _selectedIndices.add(Filters.values[index]);
                           }
+                          widget.filters.call(_selectedIndices.toList());
                         });
                       },
                       iconLeft: SvgPicture.asset(
@@ -55,9 +84,9 @@ class _FilterListWidgetState extends State<FilterListWidget> {
                       splashColor: context.colors.primary,
                       radius: 4.appAdaptive,
                       isSelected: isSelected,
-                      padding: EdgeInsets.symmetric(horizontal: 4.appWidth),
+                      padding: EdgeInsets.symmetric(horizontal: 6.appWidth),
                       child: Text(
-                        "com desconto",
+                        "Filtros",
                         style: context.textStyles.bodyText.copyWith(
                             fontSize: 10.appFont,
                             color: isSelected
@@ -71,10 +100,11 @@ class _FilterListWidgetState extends State<FilterListWidget> {
                     onTap: () {
                       setState(() {
                         if (isSelected) {
-                          _selectedIndices.remove(index);
+                          _selectedIndices.remove(Filters.values[index]);
                         } else {
-                          _selectedIndices.add(index);
+                          _selectedIndices.add(Filters.values[index]);
                         }
+                        widget.filters.call(_selectedIndices.toList());
                       });
                     },
                     borderColor: Colors.black26,
@@ -83,7 +113,7 @@ class _FilterListWidgetState extends State<FilterListWidget> {
                     isSelected: isSelected,
                     padding: EdgeInsets.symmetric(horizontal: 4.appWidth),
                     child: Text(
-                      "com desconto",
+                      getFiltersInPortuguese()[index],
                       style: context.textStyles.bodyText.copyWith(
                           fontSize: 10.appFont,
                           color: isSelected

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:guia_motel/core/responsive/responsive_extension.dart';
+import 'package:guia_motel/core/style/colors_app.dart';
+import 'package:guia_motel/core/style/text_style_app.dart';
+import 'package:guia_motel/models/response/category_item_model.dart';
 
 class ListContainItems extends StatefulWidget {
-  const ListContainItems({super.key});
+  final List<CategoryItemModel> items;
+  const ListContainItems({super.key, required this.items});
 
   @override
   State<ListContainItems> createState() => _ListContainItemsState();
@@ -12,36 +16,51 @@ class ListContainItems extends StatefulWidget {
 class _ListContainItemsState extends State<ListContainItems> {
   bool _expandido = false;
 
-  final List<Widget> _listaItens = [
-    const Text("Item 1"),
-    const Text("Item 2"),
-    const Text("Item 3"),
-    const Text("Item 4"),
-    const Text("Item 5"),
-    const Text("Item 6"),
-    const Text("Item 7"),
-    const Text("Item 8"),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return !_expandido && _listaItens.length > 4
+    return !_expandido && widget.items.length > 4
         ? Wrap(
             spacing: 12.appWidth,
             children: [
-              ..._listaItens.take(4),
+              ...widget.items.take(4).map(
+                (e) {
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.network(
+                        e.icon,
+                        scale: 4.appAdaptive,
+                        errorBuilder: (context, error, stackTrace) =>
+                            SizedBox.shrink(),
+                      ),
+                      Text(
+                        e.name,
+                        style: context.textStyles.bodyText.copyWith(
+                            color: context.colors.neutralShade500,
+                            fontSize: 10.appFont),
+                      )
+                    ],
+                  );
+                },
+              ),
               GestureDetector(
                 onTap: () {
                   setState(() {
                     _expandido = true;
                   });
                 },
-                child: const Text(
-                  "Ver mais",
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.blue,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("Ver mais",
+                        style: context.textStyles.link
+                            .copyWith(fontSize: 10.appFont)),
+                    Icon(
+                      Icons.keyboard_arrow_down_sharp,
+                      size: 20.appIcon,
+                      color: context.colors.primary,
+                    )
+                  ],
                 ),
               ),
             ],
@@ -49,20 +68,46 @@ class _ListContainItemsState extends State<ListContainItems> {
         : Wrap(
             spacing: 12,
             children: [
-              ..._listaItens,
-              if (_listaItens.length > 4)
+              ...widget.items.map(
+                (e) {
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.network(
+                        e.icon,
+                        scale: 4.appAdaptive,
+                        errorBuilder: (context, error, stackTrace) =>
+                            SizedBox.shrink(),
+                      ),
+                      Text(
+                        e.name,
+                        style: context.textStyles.bodyText.copyWith(
+                            color: context.colors.neutralShade500,
+                            fontSize: 10.appFont),
+                      )
+                    ],
+                  );
+                },
+              ),
+              if (widget.items.length > 4)
                 GestureDetector(
                   onTap: () {
                     setState(() {
                       _expandido = false;
                     });
                   },
-                  child: const Text(
-                    "Ver menos",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.blue,
-                    ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("Ver menos",
+                          style: context.textStyles.link
+                              .copyWith(fontSize: 10.appFont)),
+                      Icon(
+                        Icons.keyboard_arrow_up_sharp,
+                        size: 20.appIcon,
+                        color: context.colors.primary,
+                      )
+                    ],
                   ),
                 ),
             ],

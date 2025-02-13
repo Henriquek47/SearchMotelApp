@@ -26,35 +26,42 @@ class BottomSheetHomeWidget extends StatelessWidget {
             topRight: Radius.circular(16.appAdaptive),
           ),
         ),
-        padding: EdgeInsets.symmetric(vertical: 12.appHeight),
+        padding: EdgeInsets.only(top: 16.appHeight),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FilterListWidget(),
+            FilterListWidget(
+              filters: (list) {
+                print(list);
+              },
+            ),
             Divider(
               color: Colors.grey[300],
               height: 25.appHeight,
             ),
-            Expanded(
+            homeViewModel.motelList.isNotEmpty ?  Expanded(
               child: ListView.builder(
-                physics: const ClampingScrollPhysics(),
-                padding: EdgeInsets.only(top: 8.appHeight),
-                itemCount: 1, //homeViewModel.motelList.length,
+                physics: const NeverScrollableScrollPhysics(),
+                 padding: EdgeInsets.only(top: 8.appHeight),
+                itemCount: homeViewModel.motelList.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  final motel = homeViewModel.motelList[index];
-                  return Column(
-                    children: [
-                      TitleMotelCard(),
-                      SizedBox(
-                        height: 24.appHeight,
-                      ),
-                      BodyMotelCard(motelModel: motel,),
-                    ],
+                  final motel = homeViewModel.motelList[0];
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.appWidth),
+                    child: Column(
+                      children: [
+                        TitleMotelCard(motelModel: motel,),
+                        SizedBox(
+                          height: 24.appHeight,
+                        ),
+                        BodyMotelCard(motelModel: motel,),
+                      ],
+                    ),
                   );
                 },
               ),
-            )
+            ) : Center(child: CircularProgressIndicator(),)
           ],
         ),
       ),
