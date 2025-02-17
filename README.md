@@ -2,7 +2,8 @@
 
 Bem-vindo ao **Motel Finder App**! Este aplicativo Flutter foi desenvolvido para proporcionar uma experiência intuitiva e prática na busca por moteis, ajudando você a encontrar rapidamente os melhores locais para se hospedar.
 
-![Tela Inicial do Motel Finder App](https://github.com/user-attachments/assets/d611d06f-60a3-4096-8dff-c16c515dc2b2)
+ https://github.com/user-attachments/assets/0f59fcfe-9111-4f68-bae7-37f60fd8db81 
+
 
 ## Executando os Testes Unitários
 
