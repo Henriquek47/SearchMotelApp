@@ -1,12 +1,10 @@
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:guia_motel/core/constants/assets.dart';
 import 'package:guia_motel/core/responsive/responsive_extension.dart';
 import 'package:guia_motel/core/style/colors_app.dart';
 import 'package:guia_motel/core/style/text_style_app.dart';
+import 'package:guia_motel/core/widgets/custom_image.dart';
 import 'package:guia_motel/core/widgets/list_contain_items.dart';
-import 'package:guia_motel/core/widgets/skeleton_widget.dart';
 import 'package:guia_motel/models/response/motel_model.dart';
 
 class BodyMotelCard extends StatelessWidget {
@@ -27,31 +25,10 @@ class BodyMotelCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12.appAdaptive),
-                  child: Image.network(
-                    suite.photos.first,
+                  child: CustomImageWidget(
+                    url: suite.photos.first,
                     height: 180.appHeight,
-                    fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width * 1,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if(loadingProgress != null){
-                      return SkeletonWidget(height: 180.appHeight, width: MediaQuery.of(context).size.width * 1, radius: 12.appAdaptive,);
-                      } else{
-                        return child;
-                      }
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      return Center(
-                        child: Container(
-                          height: 180.appHeight,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: context.colors.neutralShade150,
-                              borderRadius:
-                                  BorderRadius.circular(12.appAdaptive)),
-                          child: SvgPicture.asset(Assets.photoOff),
-                        ),
-                      );
-                    },
                   ),
                 ),
                 SizedBox(
@@ -80,7 +57,9 @@ class BodyMotelCard extends StatelessWidget {
                 SizedBox(
                   height: 8.appHeight,
                 ),
-                ListContainItems(items: suite.categoryItems,),
+                ListContainItems(
+                  items: suite.categoryItems,
+                ),
                 ...motelModel.suites[index].periods.map(
                   (e) => Column(
                     children: [

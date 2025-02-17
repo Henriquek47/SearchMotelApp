@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool goNow = true;
   late HomeViewModel homeViewModel;
   late ScrollController _scrollController;
   double _opacity = 1.0;
@@ -23,9 +24,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     homeViewModel = context.read();
-    homeViewModel.getAllMotels();
+
     _scrollController = ScrollController();
     _scrollController.addListener(_updateOpacity);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        Future.wait([
+          homeViewModel.getAllMotels(),
+          homeViewModel.getPopularMotels(),
+        ]);
+      },
+    );
   }
 
   void _updateOpacity() {
@@ -47,39 +56,41 @@ class _HomeScreenState extends State<HomeScreen> {
     homeViewModel = context.watch();
 
     return Scaffold(
-      backgroundColor: context.colors.primary,
-      body: NestedScrollView(
-        controller: _scrollController,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              pinned: true,
-              backgroundColor: Colors.black.withAlpha(0),
-              leadingWidth: 0,
-              leading: const SizedBox.shrink(),
-              centerTitle: true,
-              title: const SwitchModeWidget(),
-            ),
-            SliverToBoxAdapter(
-              child: SizedBox(height: 24.appHeight),
-            ),
-            SliverOpacity(
-              opacity: _opacity,
-              sliver: const SliverToBoxAdapter(
-                child: PopularMotelCard(),
-              ),
-            ),
-          ];
-        },
-        body: DraggableScrollableSheet(
-          initialChildSize: 0.87,
-          maxChildSize: 0.87,
-          builder: (context, scrollController) {
-            return BottomSheetHomeWidget(
-            );
+      appBar: AppBar(
+        leading: SizedBox.shrink(),
+        leadingWidth: 0,
+        backgroundColor: context.colors.primary,
+        forceMaterialTransparency: true,
+        elevation: 0,
+        centerTitle: true,
+        title: SwitchModeWidget(
+          isLeft: (isLeft) {
+            setState(() {
+              goNow = isLeft;
+            });
           },
         ),
       ),
+      backgroundColor: context.colors.primary,
+      body: !goNow
+          ? SizedBox.shrink()
+          : Padding(
+              padding: EdgeInsets.only(top: 8.appHeight),
+              child: NestedScrollView(
+                  controller: _scrollController,
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return [
+                      SliverToBoxAdapter(
+                        child: Opacity(
+                          opacity: _opacity,
+                          child: PopularMotelCard(),
+                        ),
+                      ),
+                    ];
+                  },
+                  body: BottomSheetHomeWidget()),
+            ),
     );
   }
 }

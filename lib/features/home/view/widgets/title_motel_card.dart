@@ -5,8 +5,8 @@ import 'package:guia_motel/core/responsive/responsive_extension.dart';
 import 'package:guia_motel/core/style/colors_app.dart';
 import 'package:guia_motel/core/style/text_style_app.dart';
 import 'package:guia_motel/core/widgets/custom_button.dart';
+import 'package:guia_motel/core/widgets/custom_image.dart';
 import 'package:guia_motel/models/response/motel_model.dart';
-import 'package:shimmer/shimmer.dart';
 
 class TitleMotelCard extends StatelessWidget {
   final MotelModel motelModel;
@@ -20,25 +20,11 @@ class TitleMotelCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 6.appWidth,
         children: [
-          Image.network(
-            motelModel.logo,
+          CustomImageWidget(
+            url: motelModel.logo,
             height: 65.appHeight,
             width: 65.appHeight,
-            errorBuilder: (context, error, stackTrace) {
-              return SizedBox(
-                width: 65.appHeight,
-                height: 65.appHeight,
-                child: Shimmer.fromColors(
-                    baseColor: context.colors.neutralShade150,
-                    highlightColor: context.colors.neutralWhite,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: context.colors.neutralShade300,
-                      ),
-                    )),
-              );
-            },
+            shape: BoxShape.circle,
           ),
           Expanded(
             child: Column(

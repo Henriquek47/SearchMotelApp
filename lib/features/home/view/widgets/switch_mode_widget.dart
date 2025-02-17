@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:guia_motel/core/constants/assets.dart';
 import 'package:guia_motel/core/responsive/responsive_extension.dart';
 import 'package:guia_motel/core/style/text_style_app.dart';
 
 class SwitchModeWidget extends StatefulWidget {
-  const SwitchModeWidget({super.key});
+  final Function(bool isLeft) isLeft;
+  const SwitchModeWidget({super.key, required this.isLeft});
 
   @override
   State<SwitchModeWidget> createState() => _SwitchModeWidgetState();
@@ -19,17 +19,18 @@ class _SwitchModeWidgetState extends State<SwitchModeWidget> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 35.appHeight,
-      width: MediaQuery.of(context).size.width * 0.7,
+      width: MediaQuery.of(context).size.width * 0.75,
       child: Stack(
         children: [
           GestureDetector(
             onTap: () {
               setState(() {
                 _isLeft = !_isLeft;
+                widget.isLeft(_isLeft);
               });
             },
             child: Align(
-              alignment: Alignment.centerRight,
+              alignment: Alignment.center,
               child: Container(
                 height: 35.appHeight,
                 decoration: BoxDecoration(
@@ -45,7 +46,9 @@ class _SwitchModeWidgetState extends State<SwitchModeWidget> {
             left: _isLeft ? 0 : MediaQuery.of(context).size.width * 0.35,
             child: Container(
               alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width * 0.35,
+              width: _isLeft
+                  ? MediaQuery.of(context).size.width * 0.38
+                  : MediaQuery.of(context).size.width * 0.4,
               height: 35.appHeight,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -71,7 +74,7 @@ class _SwitchModeWidgetState extends State<SwitchModeWidget> {
                         color: _isLeft ? Colors.black : Colors.white),
                   ),
                   SizedBox(
-                    width: 20.appWidth,
+                    width: 28.appWidth,
                   ),
                   SvgPicture.asset(
                     Assets.calendarIcon,

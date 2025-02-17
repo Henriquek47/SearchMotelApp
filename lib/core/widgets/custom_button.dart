@@ -46,6 +46,7 @@ class CustomButton extends StatelessWidget {
           child: Padding(
             padding: padding ?? EdgeInsets.zero,
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 iconLeft ?? SizedBox.shrink(),

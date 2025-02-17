@@ -6,9 +6,10 @@ import 'package:guia_motel/core/responsive/responsive_extension.dart';
 import 'package:guia_motel/core/style/colors_app.dart';
 import 'package:guia_motel/core/style/text_style_app.dart';
 import 'package:guia_motel/core/widgets/custom_button.dart';
+import 'package:guia_motel/core/modals/filter_bottom_sheet.dart';
 
 class FilterListWidget extends StatefulWidget {
-  final  Function(List<Filters>) filters;
+  final Function(List<FiltersItems>) filters;
   const FilterListWidget({super.key, required this.filters});
 
   @override
@@ -16,75 +17,83 @@ class FilterListWidget extends StatefulWidget {
 }
 
 class _FilterListWidgetState extends State<FilterListWidget> {
-  final Set<Filters> _selectedIndices = {};
-
-  List<String> getFiltersInPortuguese() {
-  return Filters.values.map((filter) {
-    switch (filter) {
-      case Filters.withDiscount:
-        return "Com Desconto";
-      case Filters.available:
-        return "Disponível";
-      case Filters.hydromassage:
-        return "Hidromassagem";
-      case Filters.sauna:
-        return "Sauna";
-      case Filters.eroticDecoration:
-        return "Decoração Erótica";
-      case Filters.themedDecoration:
-        return "Decoração Temática";
-      case Filters.wifi:
-        return "Wi-Fi";
-      case Filters.minibar:
-        return "Minibar";
-      case Filters.garage:
-        return "Garagem";
-    }
-  }).toList();
-}
+  final Set<FiltersItems> _selectedIndices = {};
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 25.appHeight,
+      height: 35.appHeight,
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: Filters.values.length,
+        itemCount: FiltersItems.values.length,
         itemBuilder: (context, index) {
           final bool isSelected =
-              _selectedIndices.contains(Filters.values[index]);
+              _selectedIndices.contains(FiltersItems.values[index]);
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.appWidth),
+            padding: EdgeInsets.only(
+                left: 4.appWidth, right: 4.appWidth, top: 12.appHeight),
             child: index == 0
                 ? Padding(
                     padding: EdgeInsets.only(left: 12.appWidth),
-                    child: CustomButton(
-                      colors: [],
-                      onTap: () {
-                        
-                      },
-                      iconLeft: SvgPicture.asset(
-                        Assets.filterIcon,
-                        height: 18.appAdaptive,
-                        colorFilter: ColorFilter.mode(
-                            isSelected
-                                ? context.colors.neutralWhite
-                                : context.colors.neutralShade500,
-                            BlendMode.srcIn),
-                      ),
-                      borderColor: Colors.black26,
-                      splashColor: context.colors.primary,
-                      radius: 4.appAdaptive,
-                      isSelected: isSelected,
-                      padding: EdgeInsets.symmetric(horizontal: 6.appWidth),
-                      child: Text(
-                        "Filtros",
+                    child: Badge(
+                      isLabelVisible:
+                          _selectedIndices.isNotEmpty ? true : false,
+                      backgroundColor: context.colors.primary,
+                      label: Text(
+                        _selectedIndices.length > 99
+                            ? '99+'
+                            : '${_selectedIndices.length}',
                         style: context.textStyles.bodyText.copyWith(
                             fontSize: 10.appFont,
-                            color: isSelected
-                                ? context.colors.neutralWhite
-                                : context.colors.neutralShade550),
+                            color: context.colors.neutralWhite),
+                      ),
+                      child: SizedBox(
+                        height: double.maxFinite,
+                        child: CustomButton(
+                          colors: [],
+                          onTap: () async {
+                            await showModalBottomSheet(
+                              context: context,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(24.appAdaptive),
+                                  topRight: Radius.circular(24.appAdaptive),
+                                ),
+                              ),
+                              builder: (context) {
+                                return FilterBottomSheet(
+                                  filters: _selectedIndices,
+                                  maxPrice: 3000,
+                                );
+                              },
+                            );
+                            setState(() {});
+                          },
+                          iconLeft: SvgPicture.asset(
+                            Assets.filterIcon,
+                            height: 18.appAdaptive,
+                            colorFilter: ColorFilter.mode(
+                              isSelected
+                                  ? context.colors.neutralWhite
+                                  : context.colors.neutralShade500,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          borderColor: Colors.black26,
+                          splashColor: context.colors.primary,
+                          radius: 4.appAdaptive,
+                          isSelected: isSelected,
+                          padding: EdgeInsets.symmetric(horizontal: 6.appWidth),
+                          child: Text(
+                            "Filtros",
+                            style: context.textStyles.bodyText.copyWith(
+                                fontSize: 10.appFont,
+                                color: isSelected
+                                    ? context.colors.neutralWhite
+                                    : context.colors.neutralShade550),
+                          ),
+                        ),
                       ),
                     ),
                   )
@@ -93,9 +102,9 @@ class _FilterListWidgetState extends State<FilterListWidget> {
                     onTap: () {
                       setState(() {
                         if (isSelected) {
-                          _selectedIndices.remove(Filters.values[index]);
+                          _selectedIndices.remove(FiltersItems.values[index]);
                         } else {
-                          _selectedIndices.add(Filters.values[index]);
+                          _selectedIndices.add(FiltersItems.values[index]);
                         }
                         widget.filters.call(_selectedIndices.toList());
                       });
@@ -106,7 +115,7 @@ class _FilterListWidgetState extends State<FilterListWidget> {
                     isSelected: isSelected,
                     padding: EdgeInsets.symmetric(horizontal: 4.appWidth),
                     child: Text(
-                      getFiltersInPortuguese()[index],
+                      FiltersItems.values[index].label,
                       style: context.textStyles.bodyText.copyWith(
                           fontSize: 10.appFont,
                           color: isSelected

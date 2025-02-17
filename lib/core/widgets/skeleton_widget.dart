@@ -6,11 +6,12 @@ class SkeletonWidget extends StatelessWidget {
   final double radius;
   final double height;
   final double width;
+  final BoxShape? shape;
   const SkeletonWidget(
       {super.key,
       required this.radius,
       required this.height,
-      required this.width});
+      required this.width, this.shape});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,8 @@ class SkeletonWidget extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: context.colors.neutralShade300,
-            borderRadius: BorderRadius.circular(radius)
+            shape: shape ?? BoxShape.rectangle,
+            borderRadius: shape != null ? null : BorderRadius.circular(radius)
           ),
         ),
       ),

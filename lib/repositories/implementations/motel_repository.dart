@@ -12,10 +12,10 @@ class MotelRepository extends ChangeNotifier
 
   MotelRepository(this._apiClient);
 
-  List<MotelModel> motels = [];
-
   @override
   Future<List<MotelModel>> getAllMotels() async {
+    List<MotelModel> motels = [];
+
     try {
       final response = await _apiClient.getData(Endpoints.getAllMotels);
       final body = jsonDecode(utf8.decode(response.bodyBytes));

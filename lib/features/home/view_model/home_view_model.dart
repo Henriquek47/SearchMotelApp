@@ -10,26 +10,40 @@ class HomeViewModel extends ChangeNotifier {
 
   final List<MotelModel> motelList = [];
   final List<MotelModel> popularMotelList = [];
+  bool loadingPopular = false;
+  bool loadingAllMotels = false;
 
   Future<Result> getAllMotels() async {
     try {
+      loadingAllMotels = true;
+      notifyListeners();
       final list = await motelRepository.getAllMotels();
       motelList.addAll(list);
+      loadingAllMotels = false;
       notifyListeners();
       return Result.success(data: motelList);
     } catch (e) {
-      return Result.failure(messageCode: "Nenhum motel encontrado. Verifique sua conexão");
+      loadingAllMotels = false;
+      notifyListeners();
+      return Result.failure(
+          messageCode: "Nenhum motel encontrado. Verifique sua conexão");
     }
   }
 
   Future<Result> getPopularMotels() async {
     try {
+      loadingPopular = true;
+      notifyListeners();
       final list = await motelRepository.getPopularMotels();
       popularMotelList.addAll(list);
+      loadingPopular = false;
       notifyListeners();
       return Result.success(data: popularMotelList);
     } catch (e) {
-      return Result.failure(messageCode: "Nenhum motel encontrado. Verifique sua conexão");
+      loadingPopular = false;
+      notifyListeners();
+      return Result.failure(
+          messageCode: "Nenhum motel encontrado. Verifique sua conexão");
     }
   }
 }
